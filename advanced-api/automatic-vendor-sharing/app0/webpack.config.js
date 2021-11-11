@@ -11,15 +11,6 @@ const path = require("path");
 // Note that this will not affect nested paths like "lodash/pluck"
 // Note that this will disable some optimization on these packages
 // with might lead the bundle size problems
-// 将所有依赖项添加为共享模块
-// 版本是从依赖项中的 package.json 推断出来的
-// requiredVersion 是从你的 package.json 中使用的
-// 依赖会自动使用最高可用的包
-// 在联合应用程序中，基于 package.json 中的版本要求
-// 多个不同版本可能共存于联合应用程序中
-// 请注意，这不会影响像“lodash/pluck”这样的嵌套路径
-// 请注意，这将禁用对这些包的一些优化
-// 可能会导致包大小问题
 const deps = require("./package.json").dependencies;
 
 module.exports = {
@@ -29,7 +20,7 @@ module.exports = {
     static: {
       directory: path.join(__dirname, "dist"),
     },
-    port: 3001,
+    port: 3000,
   },
   target: "web",
   output: {
@@ -49,10 +40,10 @@ module.exports = {
   },
   plugins: [
     new ModuleFederationPlugin({
-      name: "app1",
+      name: "app0",
       filename: "remoteEntry.js",
       remotes: {
-        app2: "appB@http://localhost:3002/remoteEntry.js",
+        app1: "app1@http://localhost:3001/remoteEntry.js",
       },
       exposes: {
         "./Button": "./src/Button",
